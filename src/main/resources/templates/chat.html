@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat.openai.com</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="/assets/css/chatcss.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="manifest" href="/assets/img/site.webmanifest">
+    <script>
+          function searData(){
+            var userQuestion = document.getElementById("question").value;
+            var endpoint="/webx/chat/search/";
+            var data=userQuestion;
+            axios.post(endpoint,data)
+                .then(function(response){
+                    var axiosData = response.data;
+                    var answerElement = $('#answer');
+
+                    // Clear any previous content
+                    answerElement.text("");
+
+                    // Display a message while waiting for the answer
+                    answerElement.text("Searching for the answer...");
+
+                    // Add a delay before displaying the actual answer (e.g., 2 seconds)
+                    var delayInSeconds = 5;
+                    setTimeout(function () {
+                        answerElement.text(axiosData[0]);
+                    }, delayInSeconds * 1000); // Convert seconds to milliseconds
+                            console.log(response.data);
+                            console.log(axiosData[0]);
+                      })
+              .catch(function (error) {
+                // Handle any errors that occurred during the request
+                $('#answer').val(error);
+                console.error(error);
+              });
+          }
+    </script>
+</head>
+<body>
+<div class="top_div">
+    <div><h1 class="heading">WebX Chat</h1></div>
+    <p id="answer">Search your question here</p>
+    <div class="inputfield">
+        <input type="text" placeholder="Send a message" id="question">
+        <button id="question_link" class="fas fa-paper-plane send-icon custom-color" onclick="searData()"></button>
+    </div>
+<!--    <div>-->
+<!--        <p id="footer">Free Research Preview. ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT July 20 Version</p>-->
+<!--    </div>-->
+</div>
+</body>
+</html>
